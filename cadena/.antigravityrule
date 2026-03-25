@@ -1,0 +1,189 @@
+# Project Rules — Nexus Employee Portal
+
+Tech stack: **Vite + React + TypeScript + TailwindCSS v4**
+
+---
+
+## Architecture
+
+- Cấu trúc **feature-based** (`src/features/[name]/`)
+- Mỗi feature chứa: `components/`, `hooks/`, `constants/`, `types/`
+- `src/components/` — CHỈ shared/common UI components dùng chung trên ≥2 features
+- `src/pages/` — Page-level components (route targets)
+- `src/layouts/` — Layout wrappers (MainLayout, AuthLayout)
+- `src/services/` — API service layer (axios instances, API functions)
+- `src/stores/` — Zustand stores cho global/client state
+- `src/types/` — Global TypeScript interfaces/types
+- `src/config/` — App config, env variables
+- `src/constants/` — Global constants, enums
+- `src/hooks/` — Global custom hooks (shared across features)
+- `src/utils/` — Utility/helper functions
+
+```
+src/
+├── assets/
+├── components/          # CHỈ shared UI (TopNav, Sidebar, ui/Button, ui/Modal...)
+├── config/
+│   └── env.ts           # Centralized env access
+├── constants/
+├── features/
+│   └── [feature-name]/
+│       ├── components/  # Feature-scoped components
+│       ├── hooks/       # Feature-scoped hooks
+│       ├── constants/
+│       └── types/
+├── hooks/               # Global custom hooks
+├── layouts/
+├── pages/
+├── services/
+│   ├── api.ts           # Axios instance + interceptors
+│   └── [resource].service.ts
+├── stores/
+│   └── use[Name]Store.ts
+├── types/
+│   └── [resource].types.ts
+├── utils/
+├── App.tsx
+├── main.tsx
+└── index.css
+```
+
+---
+
+## Component Rules
+
+- **Mỗi file chỉ chứa 1 component**. Component name = File name
+- Dùng `memo()` cho list item components, **luôn dùng named function** cho memo
+- **Const arrays/objects khai báo bên ngoài component** — không tạo lại mỗi render
+- **Default export** cho components, **named export** cho hooks và types
+- `readonly` cho tất cả props interface
+- Nếu component trong `features/` được dùng ở ≥2 features → move lên `components/`
+
+```tsx
+// ✅ memo pattern
+const SkillBadge = memo(function SkillBadge({ label }: SkillBadgeProps) {
+  return <span>{label}</span>;
+});
+export default SkillBadge;
+
+// ✅ const ngoài component
+const NAV_ITEMS = [
+  { label: "Profile", icon: "person" },
+] as const;
+```
+
+---
+
+## TypeScript
+
+- Luôn đặt type/interface trong `types/` (global) hoặc `features/[name]/types/` (feature-scoped)
+- **KHÔNG define type inline** trong component
+- **KHÔNG dùng `any`** — luôn define proper types
+
+---
+
+## API & Data Fetching
+
+- API calls qua **service layer** (`services/*.service.ts`) — KHÔNG gọi axios trực tiếp trong component
+- **Luôn dùng `async/await`** — KHÔNG dùng `.then()` chains
+- Dùng **React Query** (`@tanstack/react-query`) cho tất cả server state
+- Custom hooks trong `hooks/` hoặc `features/[name]/hooks/`
+
+```ts
+// ✅ Service pattern
+export const employeeService = {
+  getById: async (id: string): Promise<Employee> => {
+    const response = await api.get<Employee>(`/employees/${id}`);
+    return response.data;
+  },
+} as const;
+
+// ✅ React Query hook
+export const useEmployee = (id: string) => {
+  return useQuery({
+    queryKey: ["employee", id],
+    queryFn: async () => await employeeService.getById(id),
+    enabled: !!id,
+  });
+};
+```
+
+---
+
+## State Management (Zustand)
+
+- Dùng **Zustand** cho tất cả global/client state — **KHÔNG dùng React Context** cho state management
+- Store đặt trong `src/stores/use[Name]Store.ts`
+- Pattern: `create<T>()((set, get) => ({ ...state, ...actions }))`
+- Dùng **selector** khi subscribe — KHÔNG destructure toàn bộ store
+- Persist state cần thiết với `persist` middleware
+
+```ts
+// ✅ Selector — chỉ subscribe field cần thiết
+const user = useAuthStore((s) => s.user);
+
+// ❌ KHÔNG destructure toàn bộ store
+const { user, isAuthenticated } = useAuthStore();
+```
+
+---
+
+## Forms
+
+- Dùng **React Hook Form** (`react-hook-form`) cho tất cả forms
+- Pattern: `useForm<T>()` → `register()` → `handleSubmit()` → `formState: { errors, isSubmitting }`
+- Validation rules inline qua `register()` options
+
+---
+
+## File Upload
+
+- Dùng **React Dropzone** (`react-dropzone`) cho file upload
+- Wrap trong `useCallback` cho `onDrop` handler
+
+---
+
+## Environment Variables
+
+- **KHÔNG BAO GIỜ** dùng `import.meta.env` trực tiếp trong component
+- Luôn import từ `src/config/env.ts`
+
+```ts
+// src/config/env.ts
+export const ENV = {
+  API_BASE_URL: import.meta.env.VITE_API_BASE_URL as string,
+  APP_NAME: import.meta.env.VITE_APP_NAME as string,
+  IS_DEV: import.meta.env.DEV,
+  IS_PROD: import.meta.env.PROD,
+} as const;
+```
+
+---
+
+## Path Aliases
+
+- Dùng `@/` alias trỏ tới `src/`
+- Cấu hình trong cả `vite.config.ts` và `tsconfig.json`
+
+---
+
+## Dependencies
+
+Core: `axios`, `@tanstack/react-query`, `react-hook-form`, `react-dropzone`, `zustand`
+CSS: `tailwindcss` v4 + `@tailwindcss/vite`
+
+---
+
+## Checklist khi code
+
+- [ ] Mỗi file chỉ 1 component
+- [ ] Const arrays/objects ngoài component
+- [ ] Dùng `memo()` + named function cho list item components
+- [ ] Types/interfaces trong `types/` — không inline
+- [ ] API calls qua service layer — không gọi axios trực tiếp
+- [ ] Luôn dùng `async/await` — không `.then()`
+- [ ] Env variables qua `config/env.ts`
+- [ ] Custom hooks trong `hooks/`
+- [ ] `readonly` cho props interface
+- [ ] Zustand selector — không destructure toàn bộ store
+- [ ] Proper TypeScript — không dùng `any`

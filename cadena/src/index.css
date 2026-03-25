@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  /* Primary */
+  --color-primary: #005bbf;
+  --color-primary-container: #1a73e8;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #ffffff;
+  --color-primary-fixed: #d8e2ff;
+  --color-primary-fixed-dim: #adc7ff;
+  --color-on-primary-fixed: #001a41;
+  --color-on-primary-fixed-variant: #004493;
+  --color-inverse-primary: #adc7ff;
+
+  /* Secondary */
+  --color-secondary: #5c5f60;
+  --color-secondary-container: #e1e3e4;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #626566;
+  --color-secondary-fixed: #e1e3e4;
+  --color-secondary-fixed-dim: #c5c7c8;
+  --color-on-secondary-fixed: #191c1d;
+  --color-on-secondary-fixed-variant: #454748;
+
+  /* Tertiary */
+  --color-tertiary: #9e4300;
+  --color-tertiary-container: #c55500;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #0e0200;
+  --color-tertiary-fixed: #ffdbcb;
+  --color-tertiary-fixed-dim: #ffb691;
+  --color-on-tertiary-fixed: #341100;
+  --color-on-tertiary-fixed-variant: #783100;
+
+  /* Error */
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+
+  /* Surface */
+  --color-surface: #f8fafb;
+  --color-surface-dim: #d8dadb;
+  --color-surface-bright: #f8fafb;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f2f4f5;
+  --color-surface-container: #eceeef;
+  --color-surface-container-high: #e6e8e9;
+  --color-surface-container-highest: #e1e3e4;
+  --color-on-surface: #191c1d;
+  --color-on-surface-variant: #414754;
+  --color-surface-variant: #e1e3e4;
+  --color-surface-tint: #005bc0;
+  --color-inverse-surface: #2e3132;
+  --color-inverse-on-surface: #eff1f2;
+
+  /* Outline */
+  --color-outline: #727785;
+  --color-outline-variant: #c1c6d6;
+
+  /* Background */
+  --color-background: #f8fafb;
+  --color-on-background: #191c1d;
+
+  /* Font */
+  --font-sans: "Inter", sans-serif;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+/* Auth page utilities */
+.architectural-bg {
+  background-image: linear-gradient(
+      135deg,
+      rgba(248, 250, 251, 0.95) 0%,
+      rgba(242, 244, 245, 0.9) 100%
+    ),
+    url("https://lh3.googleusercontent.com/aida-public/AB6AXuATBwOstRf3QA2RfHAa4fzYdnT3IKC8JuIPXU1ixvlEKL_ZLcI5GikFIjj5rQjFw2hNlzqttYIDLNBLrh-nVhnLk9psEv9j1kpTuSIwkshTzLU5Z7Jr0BfXIZL43-rnx5qEhH_6cwc9KAaKZA8INzgT_7MaJB51ps2vAZiMKNFB92llo22QSUfOtzlUbX3-UMbQc2pqGdzqek0ixnNGl7bS7uu0gKfS9lp53uA9seqwbnhk_7MRWIfAUWslTyy_I-aYH1dQamAaeTg");
+  background-size: cover;
+  background-position: center;
+}
+
+.glass-panel {
+  backdrop-filter: blur(20px);
+  background-color: rgba(255, 255, 255, 0.85);
+}

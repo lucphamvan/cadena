@@ -1,0 +1,71 @@
+app:
+  name: "employee-portal"
+  version: "1.0.0"
+  env: "${APP_ENV}" # development, staging, production
+
+server:
+  http:
+    host: "0.0.0.0"
+    port: 8080
+    read_timeout: 10s
+    write_timeout: 10s
+    idle_timeout: 120s
+    shutdown_timeout: 10s
+
+# Feature toggles
+features:
+  postgres:
+    enabled: true
+  redis:
+    enabled: false
+
+# CORS — restrict in staging/production
+cors:
+  allowed_origins:
+    - "${CORS_ALLOWED_ORIGINS}"
+
+# Database
+postgres:
+  host: "${POSTGRES_HOST}"
+  port: 5432
+  user: "${POSTGRES_USER}"
+  password: "${POSTGRES_PASSWORD}"
+  dbname: "${POSTGRES_DB}"
+  sslmode: "${POSTGRES_SSLMODE}"
+  max_open_conns: 25
+  max_idle_conns: 25
+  conn_max_lifetime: 5m
+
+# Cache
+redis:
+  host: "${REDIS_HOST}"
+  port: 6379
+  password: "${REDIS_PASSWORD}"
+  db: 0
+  pool_size: 10
+  min_idle_conns: 5
+  dial_timeout: 5s
+  read_timeout: 3s
+  write_timeout: 3s
+
+# Logging
+logger:
+  level: "${LOG_LEVEL}"
+  format: "json"
+  output: "stdout"
+  file_path: "logs/app.log"
+
+# JWT
+jwt:
+  secret: "${JWT_SECRET}"
+  access_token_expiry: 15m
+  refresh_token_expiry: 168h # 7 days
+
+# Employee Portal
+employee:
+  skill_options:
+    - "Go"
+    - "React"
+    - "Flutter"
+    - "CI/CD"
+  change_history_days: 7

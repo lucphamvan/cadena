@@ -1,0 +1,23 @@
+services:
+  cadena:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+        VITE_APP_NAME: ${VITE_APP_NAME:-Employee Portal}
+    container_name: cadena-frontend
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-80}:80"
+    networks:
+      - cadena-network
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  cadena-network:
+    driver: bridge

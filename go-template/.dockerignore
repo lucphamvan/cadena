@@ -1,0 +1,14 @@
+.git
+.github
+.agents
+.env
+.env.*
+*.md
+*.log
+uploads/
+.vscode
+.idea
+.DS_Store
+Dockerfile
+docker-compose*.yaml
+.dockerignore
