@@ -8,7 +8,7 @@ import { ENV } from "@/config/env";
 import { useAuthStore } from "@/stores/useAuthStore";
 
 const api: AxiosInstance = axios.create({
-  baseURL: ENV.API_BASE_URL,
+  baseURL: `${ENV.API_BASE_URL}/api`,
   timeout: 15000,
   headers: {
     "Content-Type": "application/json",

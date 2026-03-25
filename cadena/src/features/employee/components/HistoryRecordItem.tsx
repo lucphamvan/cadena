@@ -35,7 +35,7 @@ export default function HistoryRecordItem({
   });
 
   const photoUrl = user.profile_photo
-    ? `${ENV.API_BASE_URL.replace("/api", "")}${user.profile_photo}`
+    ? `${ENV.API_BASE_URL}${user.profile_photo}`
     : avatarImg;
 
   return (

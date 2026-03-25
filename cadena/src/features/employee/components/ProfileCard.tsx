@@ -8,7 +8,7 @@ interface ProfileCardProps {
 
 export default function ProfileCard({ user }: ProfileCardProps) {
   const photoUrl = user.profile_photo
-    ? `${ENV.API_BASE_URL.replace("/api", "")}${user.profile_photo}`
+    ? `${ENV.API_BASE_URL}${user.profile_photo}`
     : avatar;
 
   return (

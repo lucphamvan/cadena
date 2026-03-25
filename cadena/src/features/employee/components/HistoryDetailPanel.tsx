@@ -40,7 +40,7 @@ export default function HistoryDetailPanel({
             <img
               alt="Photo"
               className="w-full h-full object-cover"
-              src={`${ENV.API_BASE_URL.replace("/api", "")}${value}`}
+              src={`${ENV.API_BASE_URL}${value}`}
             />
           ) : (
             <span className="material-symbols-outlined text-outline">

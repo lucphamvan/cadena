@@ -34,7 +34,7 @@ export default function ProfilePhotoUpload({
   const displayUrl = previewUrl
     ? previewUrl
     : currentPhotoUrl
-      ? `${ENV.API_BASE_URL.replace("/api", "")}${currentPhotoUrl}`
+      ? `${ENV.API_BASE_URL}${currentPhotoUrl}`
       : avatar;
 
   return (
