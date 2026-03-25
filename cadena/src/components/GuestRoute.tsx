@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Navigate, Outlet } from "react-router";
 import { useAuthStore } from "@/stores/useAuthStore";
 
@@ -8,5 +9,9 @@ export default function GuestRoute() {
     return <Navigate to="/" replace />;
   }
 
-  return <Outlet />;
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+      <Outlet />
+    </Suspense>
+  );
 }
